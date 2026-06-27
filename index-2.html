@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Dhaswin S · CSE Student</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300&family=Space+Grotesk:wght@300;400;500&display=swap" rel="stylesheet"/>
+<style>
+
+/* ── THEMES ───────────────────────────────────────── */
+[data-theme="dark"]{
+  --bg:#080808;--surface:#0e0e0e;--card:#111;--border:#444444;
+  --accent:#ffffff;--accent2:#ffffff;--pop:#cccccc;
+  --text:#f0f0f0;--muted:#aaaaaa;--heading:#ffffff;
+  --glow:0 0 18px rgba(255,255,255,0.12);
+  --box-shadow:0 0 0 1px #444444, 0 4px 18px rgba(255,255,255,0.08);
+  --nav-bg:rgba(8,8,8,0.92);
+  --tag-bg:rgba(255,255,255,0.06);--tag-border:rgba(255,255,255,0.22);
+  --line:#333333;
+}
+[data-theme="light"]{
+  --bg:#fdfaf3;--surface:#f5f0e4;--card:#fffdf7;--border:#e8e0cc;
+  --accent:#8a6a00;--accent2:#c49a00;--pop:#b07d00;
+  --text:#3a2e10;--muted:#9a8c6a;--heading:#1e1800;
+  --glow:0 0 40px rgba(180,140,0,0.1);
+  --nav-bg:rgba(253,250,243,0.94);
+  --tag-bg:rgba(180,140,0,0.07);--tag-border:rgba(180,140,0,0.2);
+  --line:#e0d8c4;
+}
+[data-theme="pink"]{
+  --bg:#0a020e;--surface:#100318;--card:#140520;--border:#7a2aaa;
+  --accent:#e87fff;--accent2:#ff6ec7;--pop:#c44dff;
+  --text:#f0d6ff;--muted:#c49ddd;--heading:#fde8ff;
+  --glow:0 0 22px rgba(196,77,255,0.35);
+  --box-shadow:0 0 0 1px #7a2aaa, 0 4px 22px rgba(196,77,255,0.22);
+  --nav-bg:rgba(10,2,14,0.94);
+  --tag-bg:rgba(232,127,255,0.12);--tag-border:rgba(232,127,255,0.4);
+  --line:#3d1060;
+}
+
+/* ── RESET ────────────────────────────────────────── */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:'Cormorant Garamond',serif;font-weight:300;overflow-x:hidden;transition:background .4s,color .4s}
+::-webkit-scrollbar{width:3px}
+::-webkit-scrollbar-thumb{background:var(--accent);border-radius:99px}
+
+/* ── BG TEXTURE ───────────────────────────────────── */
+.bg-layer{position:fixed;inset:0;pointer-events:none;z-index:0}
+[data-theme="dark"] .bg-layer{background:radial-gradient(ellipse 80% 60% at 10% 0%,rgba(255,255,255,0.02) 0%,transparent 60%),radial-gradient(ellipse 60% 80% at 90% 100%,rgba(255,255,255,0.015) 0%,transparent 60%)}
+[data-theme="light"] .bg-layer{background:radial-gradient(ellipse 80% 60% at 10% 0%,rgba(200,160,0,0.06) 0%,transparent 60%),radial-gradient(ellipse 60% 80% at 90% 100%,rgba(180,140,0,0.04) 0%,transparent 60%)}
+[data-theme="pink"] .bg-layer{background:radial-gradient(ellipse 80% 60% at 5% 0%,rgba(196,77,255,0.12) 0%,transparent 55%),radial-gradient(ellipse 60% 70% at 95% 100%,rgba(232,127,255,0.1) 0%,transparent 55%)}
+
+/* ── NAV ──────────────────────────────────────────── */
+nav{position:fixed;top:0;left:0;right:0;z-index:1000;padding:18px 52px;display:flex;justify-content:flex-end;align-items:center;backdrop-filter:blur(20px);background:var(--nav-bg);border-bottom:1px solid var(--line);animation:navIn .6s ease both}
+@keyframes navIn{from{opacity:0;transform:translateY(-20px)}to{opacity:1;transform:translateY(0)}}
+.nav-right{display:flex;align-items:center;gap:32px}
+.nav-links{display:flex;gap:28px;list-style:none}
+.nav-links a{color:var(--muted);text-decoration:none;font-family:'Space Grotesk',sans-serif;font-size:0.72rem;letter-spacing:0.14em;text-transform:uppercase;transition:color .2s}
+.nav-links a:hover{color:var(--accent)}
+.theme-switcher{display:flex;gap:4px;background:var(--surface);border:1px solid var(--border);border-radius:99px;padding:4px}
+.tbtn{width:28px;height:28px;border-radius:50%;border:none;cursor:pointer;font-size:0.72rem;display:flex;align-items:center;justify-content:center;transition:all .2s;opacity:.4;background:transparent;color:var(--text)}
+.tbtn.active{opacity:1;background:var(--accent);color:var(--bg);transform:scale(1.1)}
+.tbtn:hover{opacity:.75}
+
+/* ── HERO ─────────────────────────────────────────── */
+#hero{min-height:100vh;display:grid;grid-template-columns:1fr 1fr;align-items:center;gap:60px;padding:130px 80px 80px;position:relative;z-index:2}
+.hero-text{animation:rise .9s ease .1s both}
+@keyframes rise{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
+.hero-badge{display:inline-flex;align-items:center;gap:9px;padding:6px 18px;margin-bottom:28px;border:1px solid var(--border);color:var(--muted);font-family:'Space Grotesk',sans-serif;font-size:0.68rem;letter-spacing:.18em;text-transform:uppercase;border-radius:99px}
+.bdot{width:6px;height:6px;border-radius:50%;background:var(--accent);animation:blink 1.6s ease-in-out infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.2}}
+h1{font-family:'Playfair Display',serif;font-weight:900;font-size:clamp(3rem,6.5vw,5.8rem);line-height:.9;letter-spacing:-2px;color:var(--heading);margin-bottom:24px}
+.name-line{display:block;font-style:italic;color:var(--accent)}
+[data-theme="pink"] .name-line{background:linear-gradient(135deg,var(--accent),var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hero-bio{color:var(--muted);font-size:1.15rem;line-height:1.75;max-width:400px;margin-bottom:36px;font-style:italic}
+.hero-bio strong{color:var(--text);font-style:normal;font-weight:600}
+.hero-cta{display:flex;gap:12px;flex-wrap:wrap}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:12px 26px;border-radius:8px;font-family:'Space Grotesk',sans-serif;font-size:0.82rem;font-weight:500;letter-spacing:.04em;text-decoration:none;transition:all .3s;border:none;cursor:pointer}
+.btn-primary{background:var(--accent);color:var(--bg)}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:var(--glow),0 8px 24px rgba(0,0,0,.3)}
+.btn-ghost{border:1px solid var(--border);color:var(--text);background:transparent}
+.btn-ghost:hover{border-color:var(--accent);color:var(--accent);transform:translateY(-2px)}
+.hero-stats{display:flex;gap:12px;margin-top:32px;flex-wrap:wrap}
+.stat-pill{padding:8px 16px;border-radius:8px;background:var(--card);border:1px solid var(--border);font-family:'Space Grotesk',sans-serif;font-size:0.75rem;color:var(--muted);display:flex;align-items:center;gap:6px}
+.stat-pill strong{color:var(--accent);font-size:0.88rem}
+
+/* ── PHOTO FRAME ──────────────────────────────────── */
+.hero-photo{animation:rise .9s ease .35s both;display:flex;justify-content:center;align-items:center;position:relative}
+.photo-frame{position:relative;width:340px;height:400px}
+.photo-border{position:absolute;inset:0;border-radius:24px;padding:1.5px;background:linear-gradient(135deg,var(--accent),var(--pop),var(--accent2))}
+.photo-inner{width:100%;height:100%;border-radius:23px;background:var(--card);overflow:hidden;display:flex;align-items:center;justify-content:center}
+.photo-avatar{width:90px;height:90px;border-radius:50%;background:var(--accent);display:flex;align-items:center;justify-content:center;font-family:'Playfair Display',serif;font-weight:900;font-size:2.2rem;color:var(--bg);margin-bottom:10px}
+.photo-placeholder{display:flex;flex-direction:column;align-items:center;gap:6px;color:var(--muted);font-size:0.82rem;font-family:'Space Grotesk',sans-serif;text-align:center;padding:20px}
+.chip{position:absolute;z-index:5;background:var(--card);border:1px solid var(--border);border-radius:10px;padding:9px 14px;font-family:'Space Grotesk',sans-serif;font-size:0.72rem;color:var(--muted);animation:float 4s ease-in-out infinite}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+.chip strong{display:block;color:var(--accent);font-size:0.88rem;font-weight:500}
+.ch1{top:-16px;left:-20px;animation-delay:0s}
+.ch2{bottom:-16px;right:-20px;animation-delay:2s}
+.ch3{top:40%;right:-72px;animation-delay:1s}
+
+/* ── SECTIONS ─────────────────────────────────────── */
+.sw{position:relative;z-index:2;max-width:1160px;margin:0 auto;padding:80px 60px}
+.sw.surf{background:var(--surface);border-radius:24px;border:1px solid var(--line);margin:0 40px 40px;max-width:none}
+.slabel{display:inline-flex;align-items:center;gap:10px;font-family:'Space Grotesk',sans-serif;font-size:0.68rem;letter-spacing:.22em;text-transform:uppercase;color:var(--muted);margin-bottom:12px}
+.slabel::before{content:'';width:20px;height:1px;background:var(--muted)}
+.stitle{font-family:'Playfair Display',serif;font-weight:900;font-size:clamp(2rem,4vw,3.2rem);letter-spacing:-1px;color:var(--heading);margin-bottom:44px;line-height:1}
+.pop{color:var(--accent);font-style:italic}
+
+/* ── REVEAL ───────────────────────────────────────── */
+.reveal,.reveal-l,.reveal-r,.reveal-t,.reveal-s{opacity:0;transition:opacity .7s cubic-bezier(.4,0,.2,1),transform .7s cubic-bezier(.4,0,.2,1)}
+.reveal{transform:translateY(32px)}
+.reveal-l{transform:translateX(-40px)}
+.reveal-r{transform:translateX(40px)}
+.reveal-t{transform:translateY(-28px)}
+.reveal-s{transform:scale(0.88)}
+.reveal.on,.reveal-l.on,.reveal-r.on,.reveal-t.on,.reveal-s.on{opacity:1;transform:none}
+
+/* ── ABOUT ────────────────────────────────────────── */
+.ag{display:grid;grid-template-columns:1fr 1fr;gap:52px;align-items:start}
+.atext p{color:var(--muted);line-height:1.85;margin-bottom:14px;font-size:1.05rem;font-style:italic}
+.atext p strong{color:var(--text);font-style:normal;font-weight:600}
+.dlist{display:grid;gap:10px}
+.drow{display:flex;gap:14px;align-items:center;padding:13px 16px;background:var(--card);border:1px solid var(--border);border-radius:10px;font-family:'Space Grotesk',sans-serif;font-size:0.82rem;transition:all .2s;box-shadow:var(--box-shadow,none)}
+.drow:hover{border-color:var(--accent);transform:translateX(4px)}
+.di{font-size:1rem;width:24px;text-align:center;flex-shrink:0}
+.dlabel{color:var(--muted);font-size:0.66rem;display:block;letter-spacing:.08em;text-transform:uppercase;margin-bottom:1px}
+.dval{color:var(--text);font-weight:500}
+
+/* ── SKILLS ───────────────────────────────────────── */
+.sg{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:14px}
+.skc{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:20px;position:relative;overflow:hidden;transition:all .3s;cursor:default;box-shadow:var(--box-shadow,none)}
+.skc::after{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--accent),var(--accent2));transform:scaleX(0);transition:transform .3s;transform-origin:left}
+.skc:hover{border-color:var(--accent);transform:translateY(-4px);box-shadow:var(--glow)}
+.skc:hover::after{transform:scaleX(1)}
+.ski{font-size:1.8rem;margin-bottom:10px;display:block}
+.skn{font-family:'Space Grotesk',sans-serif;font-weight:500;font-size:0.88rem;margin-bottom:4px;color:var(--heading)}
+.skl{font-family:'Space Grotesk',sans-serif;font-size:0.68rem;color:var(--muted);margin-bottom:12px;letter-spacing:.04em}
+.skbar{height:2px;background:var(--border);border-radius:99px;overflow:hidden}
+.skfill{height:100%;border-radius:99px;background:linear-gradient(90deg,var(--accent),var(--accent2));width:0;transition:width 1.2s cubic-bezier(.4,0,.2,1)}
+
+/* ── TIMELINE ─────────────────────────────────────── */
+.tl{position:relative;padding-left:34px}
+.tl::before{content:'';position:absolute;left:0;top:8px;bottom:8px;width:1px;background:linear-gradient(180deg,var(--accent),transparent)}
+.ti{position:relative;margin-bottom:40px}
+.ti::before{content:'';position:absolute;left:-40px;top:6px;width:10px;height:10px;border-radius:50%;background:var(--accent);transition:transform .3s}
+.ti:hover::before{transform:scale(1.6)}
+.tper{font-family:'Space Grotesk',sans-serif;font-size:0.68rem;color:var(--accent);letter-spacing:.12em;text-transform:uppercase;margin-bottom:6px}
+.ttitle{font-family:'Playfair Display',serif;font-size:1.15rem;font-weight:700;color:var(--heading);margin-bottom:3px}
+.tsub{color:var(--muted);font-family:'Space Grotesk',sans-serif;font-size:0.8rem;margin-bottom:8px}
+.tdesc{color:var(--muted);font-size:0.96rem;line-height:1.65;font-style:italic}
+.tbadge-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+.tbadge{display:inline-flex;align-items:center;gap:5px;padding:4px 11px;background:var(--tag-bg);border:1px solid var(--tag-border);color:var(--accent);border-radius:6px;font-family:'Space Grotesk',sans-serif;font-size:0.7rem;letter-spacing:.04em}
+
+/* ── HOBBIES ──────────────────────────────────────── */
+.hg{display:flex;flex-wrap:wrap;gap:14px}
+.hcard{display:flex;align-items:center;gap:12px;padding:14px 20px;background:var(--card);border:1px solid var(--border);border-radius:12px;font-family:'Space Grotesk',sans-serif;font-size:0.82rem;color:var(--text);transition:all .25s;box-shadow:var(--box-shadow,none)}
+.hcard:hover{border-color:var(--accent);color:var(--accent);transform:translateY(-3px)}
+.hcard span{font-size:1.4rem}
+
+/* ── PROJECTS ─────────────────────────────────────── */
+.pg{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:18px}
+.pc{background:var(--card);border:1px solid var(--border);border-radius:18px;padding:26px;transition:all .3s;position:relative;overflow:hidden;box-shadow:var(--box-shadow,none)}
+.pc:hover{border-color:var(--accent);transform:translateY(-5px);box-shadow:var(--glow)}
+.pnum{font-family:'Playfair Display',serif;font-size:3rem;font-weight:900;line-height:1;color:var(--line);margin-bottom:12px;transition:color .3s}
+.pc:hover .pnum{color:var(--accent)}
+.plabel{position:absolute;top:20px;right:20px;font-family:'Space Grotesk',sans-serif;font-size:0.62rem;padding:3px 9px;border-radius:5px;border:1px solid var(--border);color:var(--muted)}
+.ptitle{font-family:'Playfair Display',serif;font-weight:700;font-size:1.05rem;margin-bottom:8px;color:var(--heading)}
+.pdesc{color:var(--muted);font-size:0.9rem;line-height:1.6;margin-bottom:16px;font-style:italic}
+.ptags{display:flex;gap:7px;flex-wrap:wrap}
+.tag{padding:3px 10px;background:var(--tag-bg);border:1px solid var(--tag-border);color:var(--accent);border-radius:5px;font-family:'Space Grotesk',sans-serif;font-size:0.66rem;letter-spacing:.04em}
+
+/* ── CONTACT ──────────────────────────────────────── */
+.cg{display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:start}
+.clinks{display:grid;gap:10px}
+.clink{display:flex;align-items:center;gap:14px;padding:14px 18px;background:var(--card);border:1px solid var(--border);border-radius:10px;text-decoration:none;color:var(--text);transition:all .22s;font-family:'Space Grotesk',sans-serif;box-shadow:var(--box-shadow,none)}
+.clink:hover{border-color:var(--accent);transform:translateX(5px);color:var(--accent)}
+.cion{font-size:1.2rem;width:28px;text-align:center;flex-shrink:0}
+.clabel{color:var(--muted);font-size:0.64rem;display:block;letter-spacing:.08em;text-transform:uppercase;margin-bottom:2px}
+.cval{font-weight:500;font-size:0.84rem}
+.caside{display:flex;flex-direction:column;gap:18px}
+.qcard{background:var(--card);border:1px solid var(--border);border-left:2px solid var(--accent);border-radius:12px;padding:26px;font-style:italic;color:var(--muted);line-height:1.8;font-size:1rem;box-shadow:var(--box-shadow,none)}
+.qcard cite{display:block;margin-top:14px;color:var(--accent);font-style:normal;font-family:'Space Grotesk',sans-serif;font-size:0.68rem;letter-spacing:.1em;text-transform:uppercase}
+.avail{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:20px;display:flex;align-items:center;gap:14px;font-family:'Space Grotesk',sans-serif;box-shadow:var(--box-shadow,none)}
+.adot{width:10px;height:10px;border-radius:50%;background:#22c55e;flex-shrink:0;animation:blink 1.6s ease-in-out infinite;box-shadow:0 0 8px #22c55e}
+.avail-text{font-size:0.82rem;color:var(--muted)}
+.avail-text strong{color:var(--text);display:block;margin-bottom:2px;font-weight:500}
+
+/* ── FOOTER ───────────────────────────────────────── */
+footer{text-align:center;padding:32px 24px;color:var(--muted);font-family:'Space Grotesk',sans-serif;font-size:0.72rem;border-top:1px solid var(--line);position:relative;z-index:2;letter-spacing:.06em}
+footer span{color:var(--accent)}
+
+/* ── MOBILE ───────────────────────────────────────── */
+@media(max-width:768px){
+  nav{padding:14px 20px}
+  .nav-links{display:none}
+  #hero{grid-template-columns:1fr;padding:100px 24px 60px;text-align:center}
+  .hero-photo{order:-1}
+  .photo-frame{width:250px;height:290px}
+  .ch3{display:none}
+  .hero-stats{justify-content:center}
+  .hero-bio{margin:0 auto 30px}
+  .hero-cta{justify-content:center}
+  .sw{padding:52px 20px}
+  .sw.surf{margin:0 10px 20px}
+  .ag,.cg{grid-template-columns:1fr}
+  .hg{gap:10px}
+}
+</style>
+</head>
+<body>
+
+<div class="bg-layer"></div>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-right">
+    <ul class="nav-links">
+      <li><a href="#about">About</a></li>
+      <li><a href="#skills">Skills</a></li>
+      <li><a href="#education">Education</a></li>
+      <li><a href="#projects">Projects</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+    <div class="theme-switcher">
+      <button class="tbtn active" data-t="dark" title="Dark">🌙</button>
+      <button class="tbtn" data-t="light" title="Light">☀️</button>
+      <button class="tbtn" data-t="pink" title="Pink">🌸</button>
+    </div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<div id="hero">
+  <div class="hero-text">
+    <div class="hero-badge"><span class="bdot"></span>Diploma · CSE Student</div>
+    <h1>Hello, I'm<span class="name-line">Dhaswin S.</span></h1>
+    <p class="hero-bio">A <strong>Computer Science</strong> student from <strong>Karur, Tamil Nadu</strong> — curious, driven, and passionate about technology.</p>
+    <div class="hero-cta">
+      <button class="btn btn-primary" onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})">✉️ Say Hello</button>
+      <button class="btn btn-ghost" onclick="document.getElementById('projects').scrollIntoView({behavior:'smooth'})">🚀 My Work</button>
+    </div>
+    <div class="hero-stats">
+      <div class="stat-pill"><strong>2nd</strong>&nbsp;Year Diploma</div>
+      <div class="stat-pill"><strong>91.2%</strong>&nbsp;SSLC</div>
+      <div class="stat-pill">📍 Karur, TN</div>
+    </div>
+  </div>
+  <div class="hero-photo">
+    <div class="photo-frame">
+      <div class="photo-border">
+        <div class="photo-inner">
+<img src="photo.png" style="width:100%;height:100%;object-fit:cover;object-position:top;" alt="Dhaswin S"/>
+        </div>
+      </div>
+    </div>
+    <div class="chip ch1">🎓 <strong>CSE</strong>Diploma</div>
+    <div class="chip ch2">💡 <strong>Problem</strong>Solver</div>
+    <div class="chip ch3">📍 <strong>Karur</strong>Tamil Nadu</div>
+  </div>
+</div>
+
+<!-- ABOUT -->
+<div class="sw" id="about">
+  <div class="slabel reveal-t">01 — Who I Am</div>
+  <h2 class="stitle reveal-t">About <span class="pop">Me</span></h2>
+  <div class="ag">
+    <div class="reveal-l">
+      <div class="atext">
+        <p>I'm <strong>Dhaswin S</strong> — a second-year Diploma student in <strong>Computer Science Engineering</strong> at Muthayammal Polytechnic College, Rasipuram.</p>
+        <p>Scored <strong>91.2% in SSLC</strong> from Sri Sankara Vidyalaya, Karur. Now a hostel student in Namakkal — growing independently every day.</p>
+        <p>I enjoy <strong>Python</strong>, work well with <strong>MS Office</strong>, and love solving problems analytically. Always eager to learn more.</p>
+      </div>
+    </div>
+    <div class="reveal-r">
+      <div class="dlist">
+        <div class="drow"><span class="di">👤</span><div><span class="dlabel">Name</span><span class="dval">Dhaswin S</span></div></div>
+        <div class="drow"><span class="di">🎓</span><div><span class="dlabel">Course</span><span class="dval">Diploma in CSE — 2nd Year</span></div></div>
+        <div class="drow"><span class="di">🏫</span><div><span class="dlabel">College</span><span class="dval">Muthayammal Polytechnic, Rasipuram</span></div></div>
+        <div class="drow"><span class="di">📍</span><div><span class="dlabel">Hometown</span><span class="dval">Karur, Tamil Nadu</span></div></div>
+        <div class="drow"><span class="di">🌐</span><div><span class="dlabel">Languages</span><span class="dval">Tamil · English</span></div></div>
+        <div class="drow"><span class="di">🎯</span><div><span class="dlabel">Goal</span><span class="dval">Software Engineer</span></div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SKILLS -->
+<div class="sw surf" id="skills">
+  <div class="slabel reveal-t">02 — What I Know</div>
+  <h2 class="stitle reveal-t">My <span class="pop">Skills</span></h2>
+  <div class="sg">
+    <div class="skc reveal-l"><span class="ski">🧠</span><div class="skn">Problem Solving</div><div class="skl">Analytical · Sharp</div><div class="skbar"><div class="skfill" data-w="78"></div></div></div>
+    <div class="skc reveal-r"><span class="ski">💻</span><div class="skn">Computers</div><div class="skl">Advanced · Expert User</div><div class="skbar"><div class="skfill" data-w="95"></div></div></div>
+    <div class="skc reveal-l"><span class="ski">📊</span><div class="skn">MS Office</div><div class="skl">Word · Excel · PPT</div><div class="skbar"><div class="skfill" data-w="68"></div></div></div>
+
+    <div class="skc reveal-l"><span class="ski">🤝</span><div class="skn">Teamwork</div><div class="skl">Collaborative · Reliable</div><div class="skbar"><div class="skfill" data-w="88"></div></div></div>
+    <div class="skc reveal-r"><span class="ski">📖</span><div class="skn">Self Learning</div><div class="skl">Highly Motivated</div><div class="skbar"><div class="skfill" data-w="85"></div></div></div>
+  </div>
+</div>
+
+<!-- EDUCATION -->
+<div class="sw" id="education">
+  <div class="slabel reveal-t">03 — My Journey</div>
+  <h2 class="stitle reveal-t">Edu<span class="pop">cation</span></h2>
+  <div class="tl">
+    <div class="ti reveal">
+      <div class="tper">2025 — 2028 · Ongoing</div>
+      <div class="ttitle">Diploma in Computer Science Engineering</div>
+      <div class="tsub">Muthayammal Polytechnic College, Rasipuram</div>
+      <div class="tdesc">1st year completed. Currently in 2nd year. Studying programming, networking, data structures & software development.</div>
+      <div class="tbadge-row">
+        <span class="tbadge">✅ 1st Year Done</span>
+        <span class="tbadge">📚 2nd Year Ongoing</span>
+        <span class="tbadge">🏠 Hostel Student</span>
+      </div>
+    </div>
+    <div class="ti reveal">
+      <div class="tper">Completed · 2025</div>
+      <div class="ttitle">SSLC — 10th Standard</div>
+      <div class="tsub">Sri Sankara Vidyalaya, Karur</div>
+      <div class="tdesc">Scored 456/500 — 91.2%. Strong in Maths, Science, Tamil & English.</div>
+      <div class="tbadge-row">
+        <span class="tbadge">🏆 456 / 500</span>
+        <span class="tbadge">⭐ 91.2%</span>
+      </div>
+    </div>
+    <div class="ti reveal">
+      <div class="tper">Primary & Middle School</div>
+      <div class="ttitle">Sri Sankara Vidyalaya</div>
+      <div class="tsub">Karur, Tamil Nadu</div>
+      <div class="tdesc">Full schooling here — built strong values, discipline & a love for learning.</div>
+      <div class="tbadge-row"><span class="tbadge">📚 Full Schooling</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- HOBBIES -->
+<div class="sw surf" id="hobbies">
+  <div class="slabel reveal-t">04 — Off the Clock</div>
+  <h2 class="stitle reveal-t">Hob<span class="pop">bies</span></h2>
+  <div class="hg">
+    <div class="hcard reveal-l"><span>♟️</span> Chess</div>
+    <div class="hcard reveal"><span>🎵</span> Music</div>
+    <div class="hcard reveal-r"><span>💻</span> Coding</div>
+    <div class="hcard reveal-l"><span>📚</span> Reading</div>
+    <div class="hcard reveal-r"><span>🏔️</span> Mountain Trekking</div>
+  </div>
+</div>
+
+<!-- PROJECTS -->
+<div class="sw" id="projects">
+  <div class="slabel reveal-t">05 — My Work</div>
+  <h2 class="stitle reveal-t">Pro<span class="pop">jects</span></h2>
+  <div class="pg">
+    <div class="pc reveal-l">
+      <span class="plabel">Coming Soon</span>
+      <div class="pnum">01</div>
+      <div class="ptitle">Simple Calculator</div>
+      <div class="pdesc">A Python command-line calculator for basic arithmetic.</div>
+      <div class="ptags"><span class="tag">Python</span><span class="tag">Beginner</span></div>
+    </div>
+    <div class="pc reveal">
+      <span class="plabel">Concept</span>
+      <div class="pnum">02</div>
+      <div class="ptitle">Student Marks Tracker</div>
+      <div class="pdesc">Excel tool to track, calculate & visualise student marks with charts.</div>
+      <div class="ptags"><span class="tag">MS Excel</span><span class="tag">Data</span></div>
+    </div>
+    <div class="pc reveal-r">
+      <span class="plabel">🟢 Live</span>
+      <div class="pnum">03</div>
+      <div class="ptitle">Personal Portfolio</div>
+      <div class="pdesc">This very site — animated, responsive, multi-theme portfolio.</div>
+      <div class="ptags"><span class="tag">HTML/CSS</span><span class="tag">JS</span></div>
+    </div>
+    <div class="pc reveal-l">
+      <span class="plabel">Coming Soon</span>
+      <div class="pnum">04</div>
+      <div class="ptitle">Number Guessing Game</div>
+      <div class="pdesc">A fun Python game — guess the secret number with hints.</div>
+      <div class="ptags"><span class="tag">Python</span><span class="tag">Game</span></div>
+    </div>
+    <div class="pc reveal-r">
+      <span class="plabel">Future Plan</span>
+      <div class="pnum">05</div>
+      <div class="ptitle">Mini Library System</div>
+      <div class="pdesc">Book management system — tracking titles, authors & issue dates.</div>
+      <div class="ptags"><span class="tag">Python</span><span class="tag">Database</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- CONTACT -->
+<div class="sw surf" id="contact">
+  <div class="slabel reveal-t">06 — Say Hello</div>
+  <h2 class="stitle reveal-t">Get In <span class="pop">Touch</span></h2>
+  <div class="cg">
+    <div class="reveal-l">
+      <div class="clinks">
+        <a href="mailto:dhaswincy@gmail.com" class="clink"><span class="cion">📧</span><div><span class="clabel">Email</span><span class="cval">dhaswincy@gmail.com</span></div></a>
+        <a href="tel:+918072711890" class="clink"><span class="cion">📱</span><div><span class="clabel">Phone</span><span class="cval">+91 80727 11890</span></div></a>
+        <a href="https://www.instagram.com/dhaswin_s?igsh=MTFxYjlwZTB1eXJ3aQ==" target="_blank" class="clink"><span class="cion">📸</span><div><span class="clabel">Instagram</span><span class="cval">@dhaswin_s</span></div></a>
+        <div class="clink" style="opacity:.4;cursor:default;pointer-events:none"><span class="cion">💼</span><div><span class="clabel">LinkedIn</span><span class="cval">Coming Soon</span></div></div>
+      </div>
+    </div>
+    <div class="caside reveal-r">
+      <div class="qcard">
+        "Every expert was once a beginner. I'm starting with full heart, full focus, and a mind ready to grow."
+        <cite>— Dhaswin S · CSE Student, Karur TN</cite>
+      </div>
+      <div class="avail">
+        <div class="adot"></div>
+        <div class="avail-text"><strong>Open to Opportunities</strong>Internships, collabs & learning experiences welcome!</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <span>Dhaswin S</span> · Crafted from scratch, one line at a time · Diploma CSE · Muthayammal Polytechnic, Rasipuram · <span>Karur, Tamil Nadu 🇮🇳</span>
+</footer>
+
+<script>
+// Theme
+document.querySelectorAll('.tbtn').forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    document.documentElement.setAttribute('data-theme',btn.dataset.t);
+    document.querySelectorAll('.tbtn').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+  });
+});
+
+// Scroll reveal — replays every time
+const obs=new IntersectionObserver((entries)=>{
+  entries.forEach((e,i)=>{
+    if(e.isIntersecting){
+      setTimeout(()=>e.target.classList.add('on'),i*90);
+    } else {
+      e.target.classList.remove('on');
+    }
+  });
+},{threshold:0.12});
+document.querySelectorAll('.reveal,.reveal-l,.reveal-r,.reveal-t,.reveal-s').forEach(r=>obs.observe(r));
+
+// Skill bars — replays every time
+const bObs=new IntersectionObserver((entries)=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting){
+      setTimeout(()=>{e.target.style.width=e.target.dataset.w+'%';},200);
+    } else {
+      e.target.style.width='0%';
+    }
+  });
+},{threshold:0.5});
+document.querySelectorAll('.skfill').forEach(f=>bObs.observe(f));
+
+// Chip parallax
+document.addEventListener('mousemove',e=>{
+  const x=(e.clientX/window.innerWidth-.5)*12,y=(e.clientY/window.innerHeight-.5)*12;
+  document.querySelectorAll('.chip').forEach((c,i)=>{
+    const f=(i+1)*.35;c.style.transform=`translate(${x*f}px,${y*f}px)`;
+  });
+});
+</script>
+</body>
+</html>
