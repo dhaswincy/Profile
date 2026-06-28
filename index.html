@@ -4,7 +4,7 @@
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>Dhaswin S · CSE Student</title>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300&family=Space+Grotesk:wght@300;400;500&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300&family=Space+Grotesk:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500;700&family=Manrope:wght@400;500;700;800&family=Caveat:wght@500;700&family=Fraunces:ital,wght@0,500;0,700;1,500&display=swap" rel="stylesheet"/>
 <style>
 
 /* ── THEMES ───────────────────────────────────────── */
@@ -51,8 +51,19 @@ body{background:var(--bg);color:var(--text);font-family:'Cormorant Garamond',ser
 [data-theme="light"] .bg-layer{background:radial-gradient(ellipse 80% 60% at 10% 0%,rgba(200,160,0,0.06) 0%,transparent 60%),radial-gradient(ellipse 60% 80% at 90% 100%,rgba(180,140,0,0.04) 0%,transparent 60%)}
 [data-theme="pink"] .bg-layer{background:radial-gradient(ellipse 80% 60% at 5% 0%,rgba(196,77,255,0.12) 0%,transparent 55%),radial-gradient(ellipse 60% 70% at 95% 100%,rgba(232,127,255,0.1) 0%,transparent 55%)}
 
-/* ── NAV ──────────────────────────────────────────── */
-nav{position:fixed;top:0;left:0;right:0;z-index:1000;padding:18px 52px;display:flex;justify-content:flex-end;align-items:center;backdrop-filter:blur(20px);background:var(--nav-bg);border-bottom:1px solid var(--line);animation:navIn .6s ease both}
+/* ── TOP BAR (live clock) ─────────────────────────── */
+.topbar{position:fixed;top:0;left:0;right:0;z-index:1001;display:flex;align-items:center;justify-content:center;gap:10px;padding:6px 20px;background:var(--accent);color:var(--bg);font-family:'JetBrains Mono',monospace;font-size:0.72rem;letter-spacing:.06em;animation:navIn .6s ease both}
+.topbar .tb-dot{width:6px;height:6px;border-radius:50%;background:var(--bg);opacity:.7;animation:blink 1.6s ease-in-out infinite}
+.topbar .tb-loc{opacity:.85;font-weight:500}
+.topbar .tb-clock{font-weight:700;letter-spacing:.12em;font-variant-numeric:tabular-nums}
+.topbar .tb-sep{opacity:.4}
+
+/* ── NAV (shifted below topbar) ───────────────────── */
+nav{top:30px}
+@media(max-width:768px){
+  .topbar{font-size:0.62rem;padding:6px 12px;gap:6px}
+  nav{top:26px}
+}
 @keyframes navIn{from{opacity:0;transform:translateY(-20px)}to{opacity:1;transform:translateY(0)}}
 .nav-right{display:flex;align-items:center;gap:32px}
 .nav-links{display:flex;gap:28px;list-style:none}
@@ -62,9 +73,22 @@ nav{position:fixed;top:0;left:0;right:0;z-index:1000;padding:18px 52px;display:f
 .tbtn{width:28px;height:28px;border-radius:50%;border:none;cursor:pointer;font-size:0.72rem;display:flex;align-items:center;justify-content:center;transition:all .2s;opacity:.4;background:transparent;color:var(--text)}
 .tbtn.active{opacity:1;background:var(--accent);color:var(--bg);transform:scale(1.1)}
 .tbtn:hover{opacity:.75}
+.settings-trigger{width:32px;height:32px;border-radius:50%;border:1px solid var(--border);background:var(--surface);color:var(--text);cursor:pointer;font-size:0.85rem;display:flex;align-items:center;justify-content:center;transition:all .25s}
+.settings-trigger:hover{border-color:var(--accent);color:var(--accent);transform:rotate(20deg)}
 
-/* ── HERO ─────────────────────────────────────────── */
-#hero{min-height:100vh;display:grid;grid-template-columns:1fr 1fr;align-items:center;gap:60px;padding:130px 80px 80px;position:relative;z-index:2}
+/* ── COVER BANNER (custom artwork) ────────────────── */
+.cover-banner{position:relative;width:100%;height:56vh;min-height:340px;max-height:620px;overflow:hidden;z-index:1;margin-top:30px;background:#0a0a0a}
+.cover-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 18%;display:block;filter:saturate(1.04) contrast(1.02);transition:filter .4s}
+[data-theme="light"] .cover-img{filter:saturate(0.92) brightness(1.04) contrast(0.98)}
+.cover-vignette{position:absolute;inset:0;z-index:2;pointer-events:none;background:
+  linear-gradient(180deg, var(--bg) 0%, transparent 14%, transparent 78%, var(--bg) 100%),
+  linear-gradient(90deg, var(--bg) 0%, transparent 10%, transparent 90%, var(--bg) 100%)}
+.cover-fade{position:absolute;left:0;right:0;bottom:0;height:38%;background:linear-gradient(180deg,transparent 0%,var(--bg) 96%);z-index:3;pointer-events:none}
+@media(max-width:768px){
+  .cover-banner{height:42vh;min-height:260px;margin-top:26px}
+  .cover-img{object-position:32% 16%}
+}
+#hero{min-height:78vh;display:grid;grid-template-columns:1fr 1fr;align-items:center;gap:60px;padding:50px 80px 80px;position:relative;z-index:2}
 .hero-text{animation:rise .9s ease .1s both}
 @keyframes rise{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
 .hero-badge{display:inline-flex;align-items:center;gap:9px;padding:6px 18px;margin-bottom:28px;border:1px solid var(--border);color:var(--muted);font-family:'Space Grotesk',sans-serif;font-size:0.68rem;letter-spacing:.18em;text-transform:uppercase;border-radius:99px}
@@ -87,22 +111,27 @@ h1{font-family:'Playfair Display',serif;font-weight:900;font-size:clamp(3rem,6.5
 
 /* ── PHOTO FRAME ──────────────────────────────────── */
 .hero-photo{animation:rise .9s ease .35s both;display:flex;justify-content:center;align-items:center;position:relative}
-.photo-frame{position:relative;width:340px;height:400px}
+.photo-frame{position:relative;width:340px;height:400px;z-index:3}
 .photo-border{position:absolute;inset:0;border-radius:24px;padding:1.5px;background:linear-gradient(135deg,var(--accent),var(--pop),var(--accent2))}
-.photo-inner{width:100%;height:100%;border-radius:23px;background:var(--card);overflow:hidden;display:flex;align-items:center;justify-content:center;position:relative}
-.photo-inner img{filter:var(--photo-filter,none);transition:filter .4s}
-.photo-inner::before{content:'';position:absolute;inset:0;background:var(--photo-tint,transparent);mix-blend-mode:var(--photo-blend,normal);pointer-events:none;z-index:1}
-[data-theme="dark"] .photo-inner{--photo-filter:brightness(0.92) contrast(1.05);--photo-tint:radial-gradient(ellipse at center,transparent 55%,rgba(8,8,8,0.55) 100%);--photo-blend:normal}
-[data-theme="light"] .photo-inner{--photo-filter:sepia(0.18) brightness(0.97) contrast(1.03);--photo-tint:radial-gradient(ellipse at center,transparent 50%,rgba(245,240,228,0.65) 100%);--photo-blend:normal}
-[data-theme="pink"] .photo-inner{--photo-filter:saturate(1.05) brightness(0.88) contrast(1.08);--photo-tint:radial-gradient(ellipse at center,rgba(20,5,32,0) 45%,rgba(20,5,32,0.7) 100%),linear-gradient(160deg,rgba(232,127,255,0.18),rgba(255,110,199,0.12));--photo-blend:normal}
+.photo-inner{width:100%;height:100%;border-radius:23px;background:var(--card);overflow:hidden;display:flex;align-items:center;justify-content:center}
 .photo-avatar{width:90px;height:90px;border-radius:50%;background:var(--accent);display:flex;align-items:center;justify-content:center;font-family:'Playfair Display',serif;font-weight:900;font-size:2.2rem;color:var(--bg);margin-bottom:10px}
 .photo-placeholder{display:flex;flex-direction:column;align-items:center;gap:6px;color:var(--muted);font-size:0.82rem;font-family:'Space Grotesk',sans-serif;text-align:center;padding:20px}
-.chip{position:absolute;z-index:5;background:var(--card);border:1px solid var(--border);border-radius:10px;padding:9px 14px;font-family:'Space Grotesk',sans-serif;font-size:0.72rem;color:var(--muted);animation:float 4s ease-in-out infinite}
-@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
-.chip strong{display:block;color:var(--accent);font-size:0.88rem;font-weight:500}
-.ch1{top:-16px;left:-20px;animation-delay:0s}
-.ch2{bottom:-16px;right:-20px;animation-delay:2s}
-.ch3{top:40%;right:-72px;animation-delay:1s}
+
+/* ── PHOTO BLEND (theme-aware, additive only) ───────── */
+.photo-inner{position:relative;box-shadow:inset 0 0 0 1px rgba(255,255,255,0.04)}
+.photo-inner img{transition:filter .5s ease}
+.photo-inner::before{content:'';position:absolute;inset:0;z-index:2;pointer-events:none;mix-blend-mode:overlay;opacity:.55}
+.photo-inner::after{content:'';position:absolute;inset:0;z-index:3;pointer-events:none;box-shadow:inset 0 0 40px 12px var(--card),inset 0 -60px 70px -20px var(--card)}
+
+[data-theme="dark"] .photo-inner img{filter:saturate(0.92) contrast(1.04) brightness(0.97)}
+[data-theme="dark"] .photo-inner::before{background:radial-gradient(circle at 50% 30%,rgba(255,255,255,0.25),transparent 70%),linear-gradient(180deg,rgba(255,255,255,0.08),transparent 35%,transparent 70%,rgba(0,0,0,0.35))}
+
+[data-theme="light"] .photo-inner img{filter:saturate(0.88) brightness(1.05) contrast(0.97) sepia(0.06)}
+[data-theme="light"] .photo-inner::before{background:radial-gradient(circle at 50% 25%,rgba(255,247,220,0.4),transparent 70%),linear-gradient(180deg,rgba(180,140,0,0.06),transparent 35%,transparent 70%,rgba(120,90,0,0.18))}
+
+[data-theme="pink"] .photo-inner img{filter:saturate(1.05) contrast(1.05) brightness(0.96) hue-rotate(-2deg)}
+[data-theme="pink"] .photo-inner::before{background:radial-gradient(circle at 50% 30%,rgba(232,127,255,0.35),transparent 70%),linear-gradient(180deg,rgba(196,77,255,0.12),transparent 35%,transparent 70%,rgba(20,5,30,0.45))}
+
 
 /* ── SECTIONS ─────────────────────────────────────── */
 .sw{position:relative;z-index:2;max-width:1160px;margin:0 auto;padding:80px 60px}
@@ -132,7 +161,11 @@ h1{font-family:'Playfair Display',serif;font-weight:900;font-size:clamp(3rem,6.5
 .dlabel{color:var(--muted);font-size:0.66rem;display:block;letter-spacing:.08em;text-transform:uppercase;margin-bottom:1px}
 .dval{color:var(--text);font-weight:500}
 
-/* ── SKILLS ───────────────────────────────────────── */
+/* ── AGE (compact corner badge inside About) ─────────── */
+.age-corner-row{position:relative;border-style:dashed;border-color:var(--tag-border)}
+.age-corner-row .di{font-size:1.1rem}
+.age-corner-val{font-family:'JetBrains Mono',monospace;font-weight:600;letter-spacing:.02em;font-variant-numeric:tabular-nums;color:var(--accent)}
+.age-corner-val span{display:inline-block;min-width:1.4em;text-align:right}
 .sg{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:14px}
 .skc{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:20px;position:relative;overflow:hidden;transition:all .3s;cursor:default;box-shadow:var(--box-shadow,none)}
 .skc::after{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--accent),var(--accent2));transform:scaleX(0);transition:transform .3s;transform-origin:left}
@@ -157,15 +190,37 @@ h1{font-family:'Playfair Display',serif;font-weight:900;font-size:clamp(3rem,6.5
 .tbadge-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
 .tbadge{display:inline-flex;align-items:center;gap:5px;padding:4px 11px;background:var(--tag-bg);border:1px solid var(--tag-border);color:var(--accent);border-radius:6px;font-family:'Space Grotesk',sans-serif;font-size:0.7rem;letter-spacing:.04em}
 
-/* ── HOBBIES ──────────────────────────────────────── */
+/* ── ACTIVITY FEED ────────────────────────────────── */
+.afilters{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:32px;margin-top:-12px}
+.afilter{font-family:'Space Grotesk',sans-serif;font-size:0.74rem;padding:8px 16px;border-radius:99px;border:1px solid var(--border);background:var(--card);color:var(--muted);cursor:pointer;transition:all .2s}
+.afilter:hover{border-color:var(--accent);color:var(--accent)}
+.afilter.active{background:var(--accent);color:var(--bg);border-color:var(--accent)}
+.afeed{display:flex;flex-direction:column;gap:2px}
+.afitem{display:flex;gap:16px;padding:18px 4px;border-bottom:1px solid var(--line);transition:opacity .25s,transform .25s}
+.afitem:last-child{border-bottom:none}
+.afitem.afhide{display:none}
+.aficon{flex-shrink:0;width:38px;height:38px;border-radius:10px;background:var(--tag-bg);border:1px solid var(--tag-border);display:flex;align-items:center;justify-content:center;font-size:1.1rem}
+.afbody{flex:1}
+.afhead{display:flex;justify-content:space-between;align-items:baseline;gap:10px;flex-wrap:wrap;margin-bottom:4px}
+.aftitle{font-family:'Manrope',sans-serif;font-weight:700;font-size:0.95rem;color:var(--heading)}
+.afwhen{font-family:'Manrope',sans-serif;font-weight:500;font-size:0.68rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);flex-shrink:0}
+.afdesc{font-family:'Manrope',sans-serif;font-size:0.84rem;line-height:1.55;color:var(--muted)}
 .hg{display:flex;flex-wrap:wrap;gap:14px}
 .hcard{display:flex;align-items:center;gap:12px;padding:14px 20px;background:var(--card);border:1px solid var(--border);border-radius:12px;font-family:'Space Grotesk',sans-serif;font-size:0.82rem;color:var(--text);transition:all .25s;box-shadow:var(--box-shadow,none)}
 .hcard:hover{border-color:var(--accent);color:var(--accent);transform:translateY(-3px)}
 .hcard span{font-size:1.4rem}
 
-/* ── PROJECTS ─────────────────────────────────────── */
+/* ── DAILY QUOTE (attractive card) ────────────────── */
+.quote-box{position:relative;max-width:680px;margin:0 auto;text-align:center;padding:46px 40px 38px;background:var(--card);border:1px solid var(--border);border-radius:22px;box-shadow:var(--box-shadow,none);overflow:hidden}
+.quote-box::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--accent),var(--accent2),var(--pop));background-size:200% 100%;animation:quoteShimmer 6s linear infinite}
+@keyframes quoteShimmer{0%{background-position:0% 0}100%{background-position:200% 0}}
+.quote-box::after{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 60% 50% at 50% 0%,color-mix(in srgb,var(--accent) 10%,transparent) 0%,transparent 70%);pointer-events:none}
+.quote-mark{display:block;font-family:'Fraunces',serif;font-size:3.2rem;color:var(--accent);opacity:.7;line-height:.5;margin-bottom:10px;text-shadow:var(--glow)}
+.quote-text{font-family:'Fraunces',serif;font-style:italic;font-weight:600;font-size:clamp(1.35rem,2.8vw,1.85rem);color:var(--heading);line-height:1.45;margin-bottom:22px;position:relative;z-index:1}
+.quote-meta{display:flex;justify-content:center;align-items:center;gap:12px;font-family:'Space Grotesk',sans-serif;font-size:0.7rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);position:relative;z-index:1}
+.quote-tag{padding:4px 14px;border:1px solid var(--tag-border);background:var(--tag-bg);color:var(--accent);border-radius:99px;font-weight:500}
 .pg{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:18px}
-.pc{background:var(--card);border:1px solid var(--border);border-radius:18px;padding:26px;transition:all .3s;position:relative;overflow:hidden;box-shadow:var(--box-shadow,none)}
+.pc{background:var(--card);border:1px solid var(--border);border-radius:18px;padding:26px;transition:all .3s;position:relative;overflow:hidden;box-shadow:var(--box-shadow,none);display:block;text-decoration:none;color:inherit;cursor:pointer}
 .pc:hover{border-color:var(--accent);transform:translateY(-5px);box-shadow:var(--glow)}
 .pnum{font-family:'Playfair Display',serif;font-size:3rem;font-weight:900;line-height:1;color:var(--line);margin-bottom:12px;transition:color .3s}
 .pc:hover .pnum{color:var(--accent)}
@@ -191,6 +246,41 @@ h1{font-family:'Playfair Display',serif;font-weight:900;font-size:clamp(3rem,6.5
 .avail-text{font-size:0.82rem;color:var(--muted)}
 .avail-text strong{color:var(--text);display:block;margin-bottom:2px;font-weight:500}
 
+/* ── SETTINGS PANEL ───────────────────────────────── */
+.settings-overlay{position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:1998;opacity:0;visibility:hidden;transition:opacity .35s;backdrop-filter:blur(2px)}
+.settings-overlay.open{opacity:1;visibility:visible}
+.settings-panel{position:fixed;top:0;right:0;height:100%;width:340px;max-width:88vw;background:var(--surface);border-left:1px solid var(--border);z-index:1999;padding:26px 24px 30px;overflow-y:auto;transform:translateX(100%);transition:transform .4s cubic-bezier(.4,0,.2,1);display:flex;flex-direction:column;gap:24px}
+.settings-panel.open{transform:translateX(0)}
+.sp-head{display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--line);padding-bottom:16px}
+.sp-head h3{font-family:'Playfair Display',serif;font-weight:700;font-size:1.3rem;color:var(--heading)}
+.sp-close{width:30px;height:30px;border-radius:50%;border:1px solid var(--border);background:transparent;color:var(--text);cursor:pointer;transition:all .2s}
+.sp-close:hover{border-color:var(--accent);color:var(--accent);transform:rotate(90deg)}
+.sp-group{display:flex;flex-direction:column;gap:10px}
+.sp-row{flex-direction:row;justify-content:space-between;align-items:center}
+.sp-label{font-family:'Space Grotesk',sans-serif;font-size:0.8rem;font-weight:500;color:var(--text);display:block}
+.sp-sub{font-family:'Space Grotesk',sans-serif;font-size:0.68rem;color:var(--muted);display:block;margin-top:2px}
+.sp-themes{display:flex;gap:8px;flex-wrap:wrap}
+.sp-theme-btn{flex:1;padding:9px 8px;border-radius:8px;border:1px solid var(--border);background:var(--card);color:var(--muted);font-family:'Space Grotesk',sans-serif;font-size:0.76rem;cursor:pointer;transition:all .2s}
+.sp-theme-btn.active{border-color:var(--accent);color:var(--accent);background:var(--tag-bg)}
+.sp-theme-btn:hover{border-color:var(--accent)}
+.sp-accents{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.sp-swatch{width:28px;height:28px;border-radius:50%;border:2px solid var(--border);cursor:pointer;transition:all .2s;padding:0}
+.sp-swatch:hover{transform:scale(1.15)}
+.sp-swatch.active{border-color:var(--text);box-shadow:0 0 0 2px var(--bg),0 0 0 4px var(--accent)}
+.sp-custom-color{width:28px;height:28px;border-radius:50%;border:2px dashed var(--border);cursor:pointer;background:none;padding:0;overflow:hidden}
+.sp-fontsize{display:flex;gap:8px}
+.sp-fs-btn{flex:1;padding:8px;border-radius:8px;border:1px solid var(--border);background:var(--card);color:var(--muted);font-family:'Space Grotesk',sans-serif;font-size:0.82rem;cursor:pointer;transition:all .2s}
+.sp-fs-btn.active{border-color:var(--accent);color:var(--accent);background:var(--tag-bg)}
+.sp-switch{position:relative;display:inline-block;width:42px;height:24px;flex-shrink:0}
+.sp-switch input{opacity:0;width:0;height:0}
+.sp-slider{position:absolute;cursor:pointer;inset:0;background:transparent;border:1.5px solid var(--border);border-radius:99px;transition:.3s}
+.sp-slider::before{content:'';position:absolute;width:16px;height:16px;left:2px;top:2px;background:var(--muted);border-radius:50%;transition:.3s}
+.sp-switch input:checked + .sp-slider{background:var(--accent);border-color:var(--accent)}
+.sp-switch input:checked + .sp-slider::before{transform:translateX(18px);background:var(--bg)}
+.sp-reset{margin-top:auto;padding:11px;border-radius:8px;border:1px solid var(--border);background:transparent;color:var(--muted);font-family:'Space Grotesk',sans-serif;font-size:0.76rem;cursor:pointer;transition:all .2s}
+.sp-reset:hover{border-color:var(--accent);color:var(--accent)}
+@media(max-width:480px){.settings-panel{width:100%;max-width:100%}}
+
 /* ── FOOTER ───────────────────────────────────────── */
 footer{text-align:center;padding:32px 24px;color:var(--muted);font-family:'Space Grotesk',sans-serif;font-size:0.72rem;border-top:1px solid var(--line);position:relative;z-index:2;letter-spacing:.06em}
 footer span{color:var(--accent)}
@@ -199,10 +289,9 @@ footer span{color:var(--accent)}
 @media(max-width:768px){
   nav{padding:14px 20px}
   .nav-links{display:none}
-  #hero{grid-template-columns:1fr;padding:100px 24px 60px;text-align:center}
+  #hero{grid-template-columns:1fr;padding:50px 24px 60px;text-align:center}
   .hero-photo{order:-1}
   .photo-frame{width:250px;height:290px}
-  .ch3{display:none}
   .hero-stats{justify-content:center}
   .hero-bio{margin:0 auto 30px}
   .hero-cta{justify-content:center}
@@ -217,6 +306,23 @@ footer span{color:var(--accent)}
 
 <div class="bg-layer"></div>
 
+<!-- COVER BANNER -->
+<div class="cover-banner">
+  <img class="cover-img" src="banner.png" alt="Dhaswin S — Building the Future"/>
+  <div class="cover-vignette"></div>
+  <div class="cover-fade"></div>
+</div>
+
+<!-- TOP BAR -->
+<div class="topbar">
+  <span class="tb-dot"></span>
+  <span class="tb-loc">Chennai, IN</span>
+  <span class="tb-sep">·</span>
+  <span class="tb-clock" id="istClock">00:00:00</span>
+  <span class="tb-sep">·</span>
+  <span class="tb-loc">IST</span>
+</div>
+
 <!-- NAV -->
 <nav>
   <div class="nav-right">
@@ -224,6 +330,7 @@ footer span{color:var(--accent)}
       <li><a href="#about">About</a></li>
       <li><a href="#skills">Skills</a></li>
       <li><a href="#education">Education</a></li>
+      <li><a href="#activity">Activity</a></li>
       <li><a href="#projects">Projects</a></li>
       <li><a href="#contact">Contact</a></li>
     </ul>
@@ -232,6 +339,7 @@ footer span{color:var(--accent)}
       <button class="tbtn" data-t="light" title="Light">☀️</button>
       <button class="tbtn" data-t="pink" title="Pink">🌸</button>
     </div>
+    <button class="settings-trigger" id="settingsBtn" title="Settings" aria-label="Open settings">⚙️</button>
   </div>
 </nav>
 
@@ -252,16 +360,13 @@ footer span{color:var(--accent)}
     </div>
   </div>
   <div class="hero-photo">
-    <div class="photo-frame">
+    <div class="photo-frame" id="photoFrame">
       <div class="photo-border">
         <div class="photo-inner">
 <img src="photo.png" style="width:100%;height:100%;object-fit:cover;object-position:top;" alt="Dhaswin S"/>
         </div>
       </div>
     </div>
-    <div class="chip ch1">🎓 <strong>CSE</strong>Diploma</div>
-    <div class="chip ch2">💡 <strong>Problem</strong>Solver</div>
-    <div class="chip ch3">📍 <strong>Karur</strong>Tamil Nadu</div>
   </div>
 </div>
 
@@ -275,6 +380,7 @@ footer span{color:var(--accent)}
         <p>I'm <strong>Dhaswin S</strong> — a second-year Diploma student in <strong>Computer Science Engineering</strong> at Muthayammal Polytechnic College, Rasipuram.</p>
         <p>Scored <strong>91.2% in SSLC</strong> from Sri Sankara Vidyalaya, Karur. Now a hostel student in Namakkal — growing independently every day.</p>
         <p>I enjoy <strong>Python</strong>, work well with <strong>MS Office</strong>, and love solving problems analytically. Always eager to learn more.</p>
+        <p>I build and maintain real web apps using <strong>GitHub repositories</strong> and <strong>Firebase</strong>, shipping live projects and improving them over time.</p>
       </div>
     </div>
     <div class="reveal-r">
@@ -285,6 +391,13 @@ footer span{color:var(--accent)}
         <div class="drow"><span class="di">📍</span><div><span class="dlabel">Hometown</span><span class="dval">Karur, Tamil Nadu</span></div></div>
         <div class="drow"><span class="di">🌐</span><div><span class="dlabel">Languages</span><span class="dval">Tamil · English</span></div></div>
         <div class="drow"><span class="di">🎯</span><div><span class="dlabel">Goal</span><span class="dval">Software Engineer</span></div></div>
+        <div class="drow age-corner-row" id="age" title="Born 1st July 2009">
+          <span class="di">🎂</span>
+          <div>
+            <span class="dlabel">Age, right now</span>
+            <span class="dval age-corner-val"><span id="ageYears">00</span>y <span id="ageMonths">00</span>m <span id="ageDays">00</span>d</span>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -301,6 +414,10 @@ footer span{color:var(--accent)}
 
     <div class="skc reveal-l"><span class="ski">🤝</span><div class="skn">Teamwork</div><div class="skl">Collaborative · Reliable</div><div class="skbar"><div class="skfill" data-w="88"></div></div></div>
     <div class="skc reveal-r"><span class="ski">📖</span><div class="skn">Self Learning</div><div class="skl">Highly Motivated</div><div class="skbar"><div class="skfill" data-w="85"></div></div></div>
+    <div class="skc reveal-l"><span class="ski">🗣️</span><div class="skn">Communication</div><div class="skl">Clear · Confident</div><div class="skbar"><div class="skfill" data-w="80"></div></div></div>
+    <div class="skc reveal-r"><span class="ski">➗</span><div class="skn">Mathematics</div><div class="skl">Logical · Strong Fundamentals</div><div class="skbar"><div class="skfill" data-w="82"></div></div></div>
+    <div class="skc reveal-l"><span class="ski">🐙</span><div class="skn">GitHub</div><div class="skl">Repositories · Version Control</div><div class="skbar"><div class="skfill" data-w="74"></div></div></div>
+    <div class="skc reveal-r"><span class="ski">🔥</span><div class="skn">Firebase</div><div class="skl">Realtime Database · Auth</div><div class="skbar"><div class="skfill" data-w="70"></div></div></div>
   </div>
 </div>
 
@@ -340,9 +457,85 @@ footer span{color:var(--accent)}
   </div>
 </div>
 
+<!-- ACTIVITY TIMELINE -->
+<div class="sw surf" id="activity">
+  <div class="slabel reveal-t">04 — Lately</div>
+  <h2 class="stitle reveal-t">Activity <span class="pop">Feed</span></h2>
+  <div class="afilters reveal-t">
+    <button class="afilter active" data-filter="all">All</button>
+    <button class="afilter" data-filter="update">🔧 Site Updates</button>
+    <button class="afilter" data-filter="life">🌱 Daily Life</button>
+    <button class="afilter" data-filter="achieve">🏆 Achievements</button>
+  </div>
+  <div class="afeed" id="activityFeed">
+    <!--
+      HOW TO ADD A NEW ACTIVITY ENTRY:
+      Copy the block below, paste it as the FIRST item inside #activityFeed (so newest shows on top),
+      then edit the three things in CAPS. data-type must be exactly: achieve | update | life
+
+      <div class="afitem reveal" data-type="TYPE_HERE">
+        <span class="aficon">EMOJI_HERE</span>
+        <div class="afbody">
+          <div class="afhead"><span class="aftitle">TITLE_HERE</span><span class="afwhen">WHEN_HERE</span></div>
+          <p class="afdesc">DESCRIPTION_HERE</p>
+        </div>
+      </div>
+    -->
+
+    <div class="afitem reveal" data-type="achieve">
+      <span class="aficon">🏆</span>
+      <div class="afbody">
+        <div class="afhead"><span class="aftitle">Scored 91.2% in SSLC</span><span class="afwhen">2025</span></div>
+        <p class="afdesc">456 out of 500 marks at Sri Sankara Vidyalaya, Karur — strongest in Maths and Science.</p>
+      </div>
+    </div>
+
+    <div class="afitem reveal" data-type="update">
+      <span class="aficon">🔧</span>
+      <div class="afbody">
+        <div class="afhead"><span class="aftitle">Portfolio v2 — Age, Quotes & Activity Feed</span><span class="afwhen">Today</span></div>
+        <p class="afdesc">Added a live age counter, IST clock, daily quotes, theme music, click sounds and this very feed.</p>
+      </div>
+    </div>
+
+    <div class="afitem reveal" data-type="life">
+      <span class="aficon">🌱</span>
+      <div class="afbody">
+        <div class="afhead"><span class="aftitle">Settled into hostel life</span><span class="afwhen">2025</span></div>
+        <p class="afdesc">Adjusting to independent living in Namakkal while keeping up with 2nd year coursework.</p>
+      </div>
+    </div>
+
+    <div class="afitem reveal" data-type="life">
+      <span class="aficon">🌱</span>
+      <div class="afbody">
+        <div class="afhead"><span class="aftitle">Daily Python practice</span><span class="afwhen">Ongoing</span></div>
+        <p class="afdesc">Working through small scripts and logic problems to get sharper at fundamentals.</p>
+      </div>
+    </div>
+
+    <div class="afitem reveal" data-type="achieve">
+      <span class="aficon">🏆</span>
+      <div class="afbody">
+        <div class="afhead"><span class="aftitle">Completed 1st year Diploma</span><span class="afwhen">2026</span></div>
+        <p class="afdesc">Finished the first year of CSE at Muthayammal Polytechnic and moved into 2nd year.</p>
+      </div>
+    </div>
+
+    <div class="afitem reveal" data-type="update">
+      <span class="aficon">🔧</span>
+      <div class="afbody">
+        <div class="afhead"><span class="aftitle">Portfolio launched</span><span class="afwhen">Earlier</span></div>
+        <p class="afdesc">First version of this site went live — multi-theme, animated, fully responsive.</p>
+      </div>
+    </div>
+
+  </div>
+</div>
+
 <!-- HOBBIES -->
 <div class="sw surf" id="hobbies">
-  <div class="slabel reveal-t">04 — Off the Clock</div>
+  <div class="slabel reveal-t">05 — Off the Clock</div>
   <h2 class="stitle reveal-t">Hob<span class="pop">bies</span></h2>
   <div class="hg">
     <div class="hcard reveal-l"><span>♟️</span> Chess</div>
@@ -353,52 +546,58 @@ footer span{color:var(--accent)}
   </div>
 </div>
 
+<!-- DAILY QUOTE -->
+<div class="sw" id="quote">
+  <div class="slabel reveal-t" style="justify-content:center;text-align:center;display:flex">A New Thought, Every Day</div>
+  <div class="quote-box reveal-s">
+    <span class="quote-mark">"</span>
+    <p class="quote-text" id="dailyQuoteText">Loading today's thought…</p>
+    <div class="quote-meta">
+      <span class="quote-date" id="dailyQuoteDate">—</span>
+      <span class="quote-tag">Quote of the Day</span>
+    </div>
+  </div>
+</div>
+
 <!-- PROJECTS -->
 <div class="sw" id="projects">
-  <div class="slabel reveal-t">05 — My Work</div>
+  <div class="slabel reveal-t">06 — My Work</div>
   <h2 class="stitle reveal-t">Pro<span class="pop">jects</span></h2>
   <div class="pg">
-    <div class="pc reveal-l">
-      <span class="plabel">Coming Soon</span>
+    <a class="pc reveal-l" href="https://dhaswincy.github.io/Profile/" target="_blank" rel="noopener">
+      <span class="plabel">🟢 Live</span>
       <div class="pnum">01</div>
-      <div class="ptitle">Simple Calculator</div>
-      <div class="pdesc">A Python command-line calculator for basic arithmetic.</div>
-      <div class="ptags"><span class="tag">Python</span><span class="tag">Beginner</span></div>
-    </div>
-    <div class="pc reveal">
-      <span class="plabel">Concept</span>
+      <div class="ptitle">Personal Portfolio</div>
+      <div class="pdesc">This very site — animated, responsive, multi-theme portfolio, hosted on GitHub Pages.</div>
+      <div class="ptags"><span class="tag">HTML/CSS</span><span class="tag">JS</span><span class="tag">GitHub Pages</span></div>
+    </a>
+    <a class="pc reveal" href="https://dhaswincy.github.io/AppLedger/" target="_blank" rel="noopener">
+      <span class="plabel">🟢 Live</span>
       <div class="pnum">02</div>
-      <div class="ptitle">Student Marks Tracker</div>
-      <div class="pdesc">Excel tool to track, calculate & visualise student marks with charts.</div>
-      <div class="ptags"><span class="tag">MS Excel</span><span class="tag">Data</span></div>
-    </div>
-    <div class="pc reveal-r">
+      <div class="ptitle">App Ledger</div>
+      <div class="pdesc">A web app with a Firebase database backend for tracking and managing entries in real time.</div>
+      <div class="ptags"><span class="tag">Web App</span><span class="tag">Firebase</span></div>
+    </a>
+    <a class="pc reveal-r" href="https://dhaswincy.github.io/LarderLedger/" target="_blank" rel="noopener">
       <span class="plabel">🟢 Live</span>
       <div class="pnum">03</div>
-      <div class="ptitle">Personal Portfolio</div>
-      <div class="pdesc">This very site — animated, responsive, multi-theme portfolio.</div>
-      <div class="ptags"><span class="tag">HTML/CSS</span><span class="tag">JS</span></div>
-    </div>
-    <div class="pc reveal-l">
-      <span class="plabel">Coming Soon</span>
+      <div class="ptitle">Larder Ledger</div>
+      <div class="pdesc">A simple grocery store management web app to keep track of stock and essentials.</div>
+      <div class="ptags"><span class="tag">Web App</span><span class="tag">Management</span></div>
+    </a>
+    <a class="pc reveal-l" href="https://dhaswincy.github.io/TripLedger/" target="_blank" rel="noopener">
+      <span class="plabel">🟡 In Progress</span>
       <div class="pnum">04</div>
-      <div class="ptitle">Number Guessing Game</div>
-      <div class="pdesc">A fun Python game — guess the secret number with hints.</div>
-      <div class="ptags"><span class="tag">Python</span><span class="tag">Game</span></div>
-    </div>
-    <div class="pc reveal-r">
-      <span class="plabel">Future Plan</span>
-      <div class="pnum">05</div>
-      <div class="ptitle">Mini Library System</div>
-      <div class="pdesc">Book management system — tracking titles, authors & issue dates.</div>
-      <div class="ptags"><span class="tag">Python</span><span class="tag">Database</span></div>
-    </div>
+      <div class="ptitle">Trip Ledger</div>
+      <div class="pdesc">A student travel expense tracker built for hostel students. Still being refined and improved.</div>
+      <div class="ptags"><span class="tag">Web App</span><span class="tag">Ongoing</span></div>
+    </a>
   </div>
 </div>
 
 <!-- CONTACT -->
 <div class="sw surf" id="contact">
-  <div class="slabel reveal-t">06 — Say Hello</div>
+  <div class="slabel reveal-t">07 — Say Hello</div>
   <h2 class="stitle reveal-t">Get In <span class="pop">Touch</span></h2>
   <div class="cg">
     <div class="reveal-l">
@@ -426,15 +625,82 @@ footer span{color:var(--accent)}
   <span>Dhaswin S</span> · Crafted from scratch, one line at a time · Diploma CSE · Muthayammal Polytechnic, Rasipuram · <span>Karur, Tamil Nadu 🇮🇳</span>
 </footer>
 
+<!-- AUDIO -->
+<audio id="themeMusic" loop preload="none">
+  <source src="https://cdn.pixabay.com/download/audio/2022/05/27/audio_1808fbf07a.mp3" type="audio/mpeg"/>
+</audio>
+
+<!-- SETTINGS DRAWER -->
+<div class="settings-overlay" id="settingsOverlay"></div>
+<aside class="settings-panel" id="settingsPanel">
+  <div class="sp-head">
+    <h3>Settings</h3>
+    <button class="sp-close" id="settingsClose" aria-label="Close settings">✕</button>
+  </div>
+
+  <div class="sp-group">
+    <span class="sp-label">Theme</span>
+    <div class="sp-themes">
+      <button class="sp-theme-btn active" data-t="dark">🌙 Dark</button>
+      <button class="sp-theme-btn" data-t="light">☀️ Light</button>
+      <button class="sp-theme-btn" data-t="pink">🌸 Pink</button>
+    </div>
+  </div>
+
+  <div class="sp-group">
+    <span class="sp-label">Accent Colour</span>
+    <div class="sp-accents">
+      <button class="sp-swatch" data-c="default" style="background:linear-gradient(135deg,#ddd,#fff)" title="Theme default"></button>
+      <button class="sp-swatch" data-c="#ff5d5d" style="background:#ff5d5d" title="Red"></button>
+      <button class="sp-swatch" data-c="#ffb84d" style="background:#ffb84d" title="Amber"></button>
+      <button class="sp-swatch" data-c="#5de89c" style="background:#5de89c" title="Mint"></button>
+      <button class="sp-swatch" data-c="#4dc8ff" style="background:#4dc8ff" title="Sky"></button>
+      <button class="sp-swatch" data-c="#9b7dff" style="background:#9b7dff" title="Violet"></button>
+      <input type="color" class="sp-custom-color" id="customColor" title="Custom colour" value="#e87fff"/>
+    </div>
+  </div>
+
+  <div class="sp-group">
+    <span class="sp-label">Font Size</span>
+    <div class="sp-fontsize" id="fontSizeGroup">
+      <button class="sp-fs-btn" data-fs="0.9">A−</button>
+      <button class="sp-fs-btn active" data-fs="1">A</button>
+      <button class="sp-fs-btn" data-fs="1.15">A+</button>
+    </div>
+  </div>
+
+  <div class="sp-group sp-row">
+    <div>
+      <span class="sp-label">Theme Music</span>
+      <span class="sp-sub">Soft ambient loop while browsing</span>
+    </div>
+    <label class="sp-switch">
+      <input type="checkbox" id="musicToggle" checked/>
+      <span class="sp-slider"></span>
+    </label>
+  </div>
+
+  <button class="sp-reset" id="settingsReset">Reset to Defaults</button>
+</aside>
+
 <script>
-// Theme
+// ── THEME (synced between nav switcher + settings panel) ──
+function setTheme(t){
+  document.documentElement.setAttribute('data-theme',t);
+  document.querySelectorAll('.tbtn').forEach(b=>b.classList.toggle('active',b.dataset.t===t));
+  document.querySelectorAll('.sp-theme-btn').forEach(b=>b.classList.toggle('active',b.dataset.t===t));
+  localStorage.setItem('site-theme',t);
+}
 document.querySelectorAll('.tbtn').forEach(btn=>{
-  btn.addEventListener('click',()=>{
-    document.documentElement.setAttribute('data-theme',btn.dataset.t);
-    document.querySelectorAll('.tbtn').forEach(b=>b.classList.remove('active'));
-    btn.classList.add('active');
-  });
+  btn.addEventListener('click',()=>setTheme(btn.dataset.t));
 });
+document.querySelectorAll('.sp-theme-btn').forEach(btn=>{
+  btn.addEventListener('click',()=>setTheme(btn.dataset.t));
+});
+(function(){
+  const saved=localStorage.getItem('site-theme');
+  if(saved) setTheme(saved);
+})();
 
 // Scroll reveal — replays every time
 const obs=new IntersectionObserver((entries)=>{
@@ -460,13 +726,174 @@ const bObs=new IntersectionObserver((entries)=>{
 },{threshold:0.5});
 document.querySelectorAll('.skfill').forEach(f=>bObs.observe(f));
 
-// Chip parallax
-document.addEventListener('mousemove',e=>{
-  const x=(e.clientX/window.innerWidth-.5)*12,y=(e.clientY/window.innerHeight-.5)*12;
-  document.querySelectorAll('.chip').forEach((c,i)=>{
-    const f=(i+1)*.35;c.style.transform=`translate(${x*f}px,${y*f}px)`;
+// ── LIVE IST CLOCK (Chennai) ──
+function updateClock(){
+  const now=new Date();
+  const istString=now.toLocaleTimeString('en-GB',{timeZone:'Asia/Kolkata',hour12:false});
+  document.getElementById('istClock').textContent=istString;
+}
+updateClock();
+setInterval(updateClock,1000);
+
+// ── LIVE AGE COUNTER ──
+function updateAge(){
+  const birth=new Date(2009,6,1,0,0,0); // 1st July 2009 (month is 0-indexed)
+  const now=new Date();
+  let years=now.getFullYear()-birth.getFullYear();
+  let months=now.getMonth()-birth.getMonth();
+  let days=now.getDate()-birth.getDate();
+
+  if(days<0){
+    months--;
+    const prevMonth=new Date(now.getFullYear(),now.getMonth(),0);
+    days+=prevMonth.getDate();
+  }
+  if(months<0){
+    years--;
+    months+=12;
+  }
+
+  document.getElementById('ageYears').textContent=String(years).padStart(2,'0');
+  document.getElementById('ageMonths').textContent=String(months).padStart(2,'0');
+  document.getElementById('ageDays').textContent=String(days).padStart(2,'0');
+}
+updateAge();
+setInterval(updateAge,60*1000); // recompute every minute (day rolls over correctly)
+
+// ── DAILY QUOTE (rotates once per day, deterministic) ──
+const DAILY_QUOTES=[
+  "Small daily progress beats sudden ambitious leaps.",
+  "Discipline is choosing what you want most over what you want now.",
+  "Every line of code you write today is practice for the one that matters tomorrow.",
+  "Growth happens quietly, in the days nobody is watching.",
+  "Curiosity is the only qualification you truly need to begin.",
+  "Consistency turns ordinary effort into extraordinary results.",
+  "The hostel room is small, but the ambition doesn't have to be.",
+  "Learn one new thing today — that's the whole assignment.",
+  "Mistakes are just the tuition fee for getting better.",
+  "Focus on being one percent better, not perfect.",
+  "Karur taught the roots, college is teaching the wings.",
+  "A calm mind solves problems a panicked one can't even see.",
+  "Patience with yourself is still a form of discipline.",
+  "What you practice in silence, you perform in public.",
+  "Code, like character, is built one careful decision at a time.",
+  "Don't wait to feel ready — start, and readiness follows.",
+  "Every expert was once exactly where you are now.",
+  "Progress isn't always visible, but it's always happening if you show up.",
+  "Be stubborn about your goals and flexible about your methods.",
+  "The student who asks questions is already ahead of the one who doesn't.",
+  "Effort compounds quietly, like interest on a good habit.",
+  "Today's small win is tomorrow's solid foundation.",
+  "Treat every bug as a lesson, not a setback.",
+  "Steady hands and a clear head solve more than raw speed.",
+  "You don't need permission to start improving today.",
+  "What feels hard now is what will feel easy in a year.",
+  "Good habits are the algorithms that run your life.",
+  "Stay a beginner at heart, even as you grow skilled.",
+  "The work you do when no one's grading it builds the most character.",
+  "Aim to understand, not just to memorise."
+];
+function loadDailyQuote(){
+  const now=new Date();
+  const start=new Date(now.getFullYear(),0,0);
+  const dayOfYear=Math.floor((now-start)/86400000);
+  const quote=DAILY_QUOTES[dayOfYear % DAILY_QUOTES.length];
+  document.getElementById('dailyQuoteText').textContent=quote;
+  document.getElementById('dailyQuoteDate').textContent=now.toLocaleDateString('en-IN',{day:'numeric',month:'long',year:'numeric'});
+}
+loadDailyQuote();
+
+// ── ACTIVITY FEED FILTERS ──
+document.querySelectorAll('.afilter').forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    document.querySelectorAll('.afilter').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+    const filter=btn.dataset.filter;
+    document.querySelectorAll('.afitem').forEach(item=>{
+      item.classList.toggle('afhide', filter!=='all' && item.dataset.type!==filter);
+    });
   });
 });
+
+// ── SETTINGS PANEL ──
+const settingsPanel=document.getElementById('settingsPanel');
+const settingsOverlay=document.getElementById('settingsOverlay');
+function openSettings(){settingsPanel.classList.add('open');settingsOverlay.classList.add('open');}
+function closeSettings(){settingsPanel.classList.remove('open');settingsOverlay.classList.remove('open');}
+document.getElementById('settingsBtn').addEventListener('click',openSettings);
+document.getElementById('settingsClose').addEventListener('click',closeSettings);
+settingsOverlay.addEventListener('click',closeSettings);
+
+// Font size
+document.querySelectorAll('.sp-fs-btn').forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    document.querySelectorAll('.sp-fs-btn').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+    document.documentElement.style.fontSize=(16*parseFloat(btn.dataset.fs))+'px';
+    localStorage.setItem('site-fontsize',btn.dataset.fs);
+  });
+});
+(function(){
+  const savedFs=localStorage.getItem('site-fontsize');
+  if(savedFs){
+    document.documentElement.style.fontSize=(16*parseFloat(savedFs))+'px';
+    document.querySelectorAll('.sp-fs-btn').forEach(b=>b.classList.toggle('active',b.dataset.fs===savedFs));
+  }
+})();
+
+// Accent colour
+function applyAccent(color){
+  if(color==='default'){
+    document.documentElement.style.removeProperty('--accent');
+    document.documentElement.style.removeProperty('--accent2');
+    document.documentElement.style.removeProperty('--pop');
+    localStorage.removeItem('site-accent');
+  } else {
+    document.documentElement.style.setProperty('--accent',color);
+    document.documentElement.style.setProperty('--accent2',color);
+    document.documentElement.style.setProperty('--pop',color);
+    localStorage.setItem('site-accent',color);
+  }
+  document.querySelectorAll('.sp-swatch').forEach(s=>s.classList.toggle('active',s.dataset.c===color));
+}
+document.querySelectorAll('.sp-swatch').forEach(sw=>{
+  sw.addEventListener('click',()=>applyAccent(sw.dataset.c));
+});
+document.getElementById('customColor').addEventListener('input',e=>applyAccent(e.target.value));
+(function(){
+  const savedAccent=localStorage.getItem('site-accent');
+  if(savedAccent) applyAccent(savedAccent);
+})();
+
+// Reset to defaults
+document.getElementById('settingsReset').addEventListener('click',()=>{
+  localStorage.removeItem('site-theme');
+  localStorage.removeItem('site-fontsize');
+  localStorage.removeItem('site-accent');
+  localStorage.removeItem('site-music');
+  location.reload();
+});
+
+// ── THEME MUSIC (defaults ON) ──
+const themeMusic=document.getElementById('themeMusic');
+const musicToggle=document.getElementById('musicToggle');
+themeMusic.volume=0.28;
+function setMusic(on){
+  musicToggle.checked=on;
+  if(on){ themeMusic.play().catch(()=>{}); }
+  else { themeMusic.pause(); }
+  localStorage.setItem('site-music',on?'on':'off');
+}
+musicToggle.addEventListener('change',()=>setMusic(musicToggle.checked));
+(function(){
+  // Default ON unless the user explicitly turned it off before
+  musicToggle.checked = localStorage.getItem('site-music') !== 'off';
+})();
+document.addEventListener('click',function startMusicOnce(){
+  if(musicToggle.checked && themeMusic.paused){ themeMusic.play().catch(()=>{}); }
+},{once:false});
+
+
 </script>
 </body>
 </html>
